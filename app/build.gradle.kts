@@ -1,11 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-   /* id("com.google.devtools.ksp") version "2.0.0-1.0.23"*/
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp") // KSP for Room and other annotation processing
+
 }
 
 android {
     namespace = "com.example.recipesapp"
+
     compileSdk = 34
 
     defaultConfig {
@@ -17,8 +21,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildFeatures{
-        viewBinding=true
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
     }
 
     buildTypes {
@@ -37,6 +42,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
+
+
 }
 
 dependencies {
@@ -49,7 +60,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 
     // Kotlin
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -66,20 +76,33 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
 
-    implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+
     implementation (libs.androidx.recyclerview)
 /*
-    implementation (libs.shimmer)*/
+    kapt(libs.androidx.room.compiler)
+*/
+
+    /*
+        implementation (libs.shimmer)*/
 
 /*    implementation (libs.shimmer.recyclerview)*/
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
 
-    /*  // To use Kotlin Symbol Processing (KSP)
-      ksp("androidx.room:room-compiler:$room_version")*/
 
 
+    implementation(libs.coil)
+
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.hilt.android)
+
+    // Use KSP for Room and Hilt
+    ksp(libs.androidx.room.compiler)
+    ksp(libs.hilt.compiler)
+
+    // Use KAPT for DataBinding
+    kapt(libs.androidx.databinding.compiler)
 
 
 }

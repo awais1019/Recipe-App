@@ -8,35 +8,32 @@
     tools:context=".ui.fragments.recipes.RecipesFragment">
 
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="52dp"
         android:clickable="true"
-        app:tint="@color/red"
         android:contentDescription="TODO"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_restaurant" />
-
+        app:srcCompat="@drawable/ic_restaurant"
+        app:tint="@color/red" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="0dp"
-        android:layout_marginHorizontal="8dp"
         android:layout_height="0dp"
-        tools:listitem="@layout/recycleview_item_design"
+        android:layout_marginHorizontal="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:itemCount="4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:itemCount="4"
+        tools:listitem="@layout/recycleview_item_design" />
 
     <ImageView
         android:id="@+id/imageViewError"
