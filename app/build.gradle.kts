@@ -78,14 +78,13 @@ dependencies {
 
 
     implementation (libs.androidx.recyclerview)
+
+
+        implementation (libs.shimmer)
+
 /*
-    kapt(libs.androidx.room.compiler)
+    implementation (libs.shimmer.recyclerview)
 */
-
-    /*
-        implementation (libs.shimmer)*/
-
-/*    implementation (libs.shimmer.recyclerview)*/
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
 

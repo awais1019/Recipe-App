@@ -7,56 +7,71 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.example.recipesapp.MainViewModel
-import com.example.recipesapp.R
-import com.example.recipesapp.RecipeAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recipesapp.viewmodels.MainViewModel
+import com.example.recipesapp.adapters.RecipeAdapter
+import com.example.recipesapp.databinding.FragmentRecipesBinding
 import com.example.recipesapp.util.Constants.Companion.API_KEY
 import com.example.recipesapp.util.NetworkResult
+import com.example.recipesapp.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.http.QueryMap
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
 
-    private var adapter= lazy { RecipeAdapter() }
-
+    private val recipeViewModel: RecipeViewModel by viewModels()
+    private var adapter=  RecipeAdapter()
+    private var _binding: FragmentRecipesBinding? = null
+    private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
+        _binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        setupRecyclerView()
         getRecipes()
-        return inflater.inflate(R.layout.fragment_recipes, container, false)
-    }
+        return binding.root    }
 
     private fun getRecipes()
     {
-      mainViewModel.getRecipes(getQueries())
+      mainViewModel.getRecipes(recipeViewModel.getQueries())
         mainViewModel.response.observe(viewLifecycleOwner)
         {
             when(it)
             {
                 is NetworkResult.Success->
-               it.data?.let { it1 -> adapter.value.updateRecipeList(it1) }
-                is NetworkResult.Error ->Toast.makeText(requireContext(),it.msg,Toast.LENGTH_SHORT).show()
-                is NetworkResult.Loading -> Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                {
+                    it.data?.let { it1 -> adapter.updateRecipeList(it1)}
+                    hideShimmer()
+               }
+                is NetworkResult.Error -> {
+
+                    hideShimmer()
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Loading -> showShimmer()
             }
         }
     }
 
-    private fun getQueries(): HashMap<String, String> {
+    private fun showShimmer() {
+        binding.shimmerContainer.visibility = View.VISIBLE
+        binding.shimmerContainer.startShimmer()
+        binding.recycleView.visibility = View.GONE
+    }
 
-        val queries=HashMap<String,String>()
-         queries["number"]="50"
-         queries["apiKey"]=API_KEY
-         queries["type"]="snack"
-         queries["diet"]="Vegan"
-         queries["addRecipeInformation"]="true"
-         queries["fillIngredients"]="true"
-        return queries
+    private fun hideShimmer() {
+        binding.shimmerContainer.visibility = View.GONE
+        binding.shimmerContainer.stopShimmer()
+        binding.recycleView.visibility = View.VISIBLE
+    }
+
+    private fun setupRecyclerView() {
+        binding.recycleView.adapter=adapter
+        binding.recycleView.layoutManager = LinearLayoutManager(requireContext())
+        showShimmer()
     }
 
 

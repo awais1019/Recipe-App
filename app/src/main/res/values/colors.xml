@@ -9,6 +9,7 @@
 
     <color name="lightGray">#F9F9F9</color>
     <color name="mediumGray">#D1D1D1</color>
+    <color name="mediumGrey">#707070</color>
     <color name="lightMediumGray">#80D1D1D1</color>
     <color name="darkGray">#4B4B4B</color>
     <color name="dark">#313C44</color>
