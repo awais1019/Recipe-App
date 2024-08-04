@@ -92,10 +92,9 @@ dependencies {
 
     implementation(libs.coil)
 
-
     implementation(libs.androidx.room.runtime)
     implementation(libs.hilt.android)
-
+    implementation(libs.androidx.room.ktx)
     // Use KSP for Room and Hilt
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)

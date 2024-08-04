@@ -5,9 +5,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.Repository
+import com.example.recipesapp.database.RecipeEntity
 import com.example.recipesapp.models.FoodRecipe
 import com.example.recipesapp.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,9 +21,20 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: Repository,
-    application: Application // Injecting Application
+    application: Application
 ) : AndroidViewModel(application) {
 
+   //Room Database
+    val readRecipes:LiveData<List<RecipeEntity>> = repository.local.getRecipes().asLiveData()
+
+
+    private fun insertRecipes(recipeEntity: RecipeEntity)=viewModelScope.launch {
+        repository.local.insertRecipes(recipeEntity)
+    }
+
+
+
+    //Retrofit
     private val recipesResponse = MutableLiveData<NetworkResult<FoodRecipe>>()
     val response  get() = recipesResponse
 
@@ -58,6 +72,12 @@ class MainViewModel @Inject constructor(
         {
             val response=repository.remote.getRecipes(queries)
             recipesResponse.value=handleRecipesResponse(response)
+
+            val responseData=recipesResponse.value!!.data
+            if (responseData!=null)
+            {
+                offlineCacheRecipes(responseData)
+            }
         }
         catch (e:Exception)
         {
@@ -69,6 +89,11 @@ class MainViewModel @Inject constructor(
         {
             recipesResponse.value=NetworkResult.Error("No Internet Connection")
         }
+    }
+
+    private fun offlineCacheRecipes(responseData: FoodRecipe) {
+          val recipeEntity=RecipeEntity(responseData)
+        insertRecipes(recipeEntity)
     }
 
 

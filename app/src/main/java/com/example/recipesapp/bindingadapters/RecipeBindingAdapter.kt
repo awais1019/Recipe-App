@@ -19,6 +19,7 @@ class RecipeBindingAdapter {
             imgView.load(source)
             {
                 crossfade(600)
+                error(R.drawable.error_placeholder)
             }
         }
 

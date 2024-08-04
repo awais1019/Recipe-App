@@ -7,14 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.viewmodels.MainViewModel
 import com.example.recipesapp.adapters.RecipeAdapter
 import com.example.recipesapp.databinding.FragmentRecipesBinding
 import com.example.recipesapp.util.Constants.Companion.API_KEY
 import com.example.recipesapp.util.NetworkResult
+import com.example.recipesapp.util.observeOnce
 import com.example.recipesapp.viewmodels.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -34,6 +37,22 @@ class RecipesFragment : Fragment() {
         getRecipes()
         return binding.root    }
 
+
+    fun readDatabase() {
+
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observeOnce(viewLifecycleOwner)
+            {
+                if (it.isNotEmpty()) {
+                    hideShimmer()
+                    adapter.updateRecipeList(it[0].foodRecipe)
+                } else {
+                    getRecipes()
+                }
+
+            }
+        }
+    }
     private fun getRecipes()
     {
       mainViewModel.getRecipes(recipeViewModel.getQueries())
@@ -50,6 +69,7 @@ class RecipesFragment : Fragment() {
 
                     hideShimmer()
                     Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
+                    offlineCache()
                 }
                 is NetworkResult.Loading -> showShimmer()
             }
@@ -74,5 +94,18 @@ class RecipesFragment : Fragment() {
         showShimmer()
     }
 
+    private fun offlineCache() {
+
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner)
+            {
+                if (it.isNotEmpty()) {
+                    adapter.updateRecipeList(it[0].foodRecipe)
+                }
+
+            }
+        }
+
+    }
 
 }
