@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import com.example.recipesapp.R
 
-class RecipeBindingAdapter {
+class RecipeRowBindingAdapter {
 
     companion object
     {

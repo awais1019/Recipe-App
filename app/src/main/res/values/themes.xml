@@ -1,9 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.RecipesApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.RecipesApp" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+
     </style>
 
     <style name="Theme.RecipesApp" parent="Base.Theme.RecipesApp" />
+
+
+    <style name="customChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+
+        <item name="chipBackgroundColor">@color/chip_color</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="checkedIconTint">@color/chip_text_color</item>
+    </style>
 </resources>

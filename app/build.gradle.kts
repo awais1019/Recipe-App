@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.utils.IMPLEMENTATION
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -101,6 +103,7 @@ dependencies {
 
     // Use KAPT for DataBinding
     kapt(libs.androidx.databinding.compiler)
+    implementation(libs.androidx.datastore.preferences)
 
 
 }

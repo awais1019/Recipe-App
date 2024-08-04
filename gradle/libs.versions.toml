@@ -3,6 +3,7 @@ agp = "8.5.1"
 coil = "2.7.0"
 coordinatorlayout = "1.2.0"
 databindingCompiler = "8.5.1"
+datastorePreferences = "1.1.1"
 hiltAndroid = "2.47"
 hiltLifecycleViewmodel = "1.0.0-alpha03"
 kotlin = "1.9.0"
@@ -26,6 +27,7 @@ shimmerRecyclerview = "0.4.1"
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-databinding-compiler = { module = "androidx.databinding:databinding-compiler", version.ref = "databindingCompiler" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodel" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleViewmodelKtx" }
