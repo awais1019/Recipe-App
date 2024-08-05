@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipesapp.R
 import com.example.recipesapp.viewmodels.MainViewModel
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
-
+    private val args: RecipesFragmentArgs by navArgs()
     private val recipeViewModel: RecipeViewModel by viewModels()
     private var adapter=  RecipeAdapter()
     private var _binding: FragmentRecipesBinding? = null
@@ -39,7 +40,7 @@ class RecipesFragment : Fragment() {
         setupRecyclerView()
         getRecipes()
         binding.fabRecipes.setOnClickListener {
-            findNavController().navigate(R.id.action_recipesFragment_to_bottomSheetFragment)
+            findNavController().navigate(R.id.bottomSheetFragment)
         }
         return binding.root
     }
@@ -50,7 +51,7 @@ class RecipesFragment : Fragment() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner)
             {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty()&&!args.backFromBottomSheet) {
                     hideShimmer()
                     adapter.updateRecipeList(it[0].foodRecipe)
                 } else {

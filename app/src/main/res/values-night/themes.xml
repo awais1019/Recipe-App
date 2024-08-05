@@ -2,17 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RecipesApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="android:colorPrimary">@color/colorPrimaryDark</item>    </style>
+        <!--<item name="android:colorPrimary">@color/colorPrimaryDark</item>  -->  </style>
 
 
-    <style name="Theme.RecipesApp" parent="Base.Theme.RecipesApp" />
-
-    <style name="customChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
-
-        <item name="chipBackgroundColor">@color/chip_color</item>
-        <item name="android:textColor">@color/chip_text_color</item>
-        <item name="checkedIconTint">@color/chip_text_color</item>
-    </style>
 
 
 </resources>

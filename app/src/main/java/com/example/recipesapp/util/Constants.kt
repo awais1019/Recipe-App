@@ -1,5 +1,7 @@
 package com.example.recipesapp.util
 
+import androidx.datastore.preferences.core.Preferences
+
 class Constants {
 
     companion object
@@ -19,6 +21,27 @@ class Constants {
         //Room Database
         const val DATABASE_NAME="recipes_database"
         const val RECIPES_TABLE="recipes_table"
+        
+        
+        
+        
+        
+        //Bottom Sheet Values
+        
+        const val DEFAULT_MEAL_TYPE="main course"
+        const val DEFAULT_DIET_TYPE="gluten free"
+        const val DEFAULT_RECIPES_NUMBER="30"
+
+
+        //Preference values
+        const val PREFERENCES_NAME="food_preferences"
+        const val PREFERENCE_MEAL_TYPE="mealType"
+        const val PREFERENCE_MEAL_TYPE_ID="mealTypeId"
+        const val PREFERENCE_DIET_TYPE="dietType"
+        const val PREFERENCE_DIET_TYPE_ID="dietTypeId"
+
+
+
 
     }
 }
