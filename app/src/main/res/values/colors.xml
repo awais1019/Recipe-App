@@ -24,6 +24,6 @@
     <color name="chipSelectedColor">#206200EA</color>
     <color name="chipColor">@color/lightGray</color>
 
-    <color name="chipSelectedTextColor">@color/colorPrimary</color>
+    <color name="chipSelectedTextColor">@color/green</color>
     <color name="chipTextColor">@color/darkGray</color>
 </resources>

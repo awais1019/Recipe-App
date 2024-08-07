@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp") // KSP for Room and other annotation processing
@@ -105,6 +106,9 @@ dependencies {
     // Use KAPT for DataBinding
     kapt(libs.androidx.databinding.compiler)
     implementation(libs.androidx.datastore.preferences)
+
+
+
 
 
 }

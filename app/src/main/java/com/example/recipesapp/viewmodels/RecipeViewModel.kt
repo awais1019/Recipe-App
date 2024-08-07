@@ -1,8 +1,11 @@
 package com.example.recipesapp.viewmodels
 
+import android.widget.Toast
 import androidx.compose.ui.window.Dialog
 import androidx.datastore.dataStore
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.DataStoreRepository
 import com.example.recipesapp.data.MealAndDietType
@@ -16,18 +19,33 @@ import com.example.recipesapp.util.Constants.Companion.QUERY_DIET
 import com.example.recipesapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.example.recipesapp.util.Constants.Companion.QUERY_NUMBER
 import com.example.recipesapp.util.Constants.Companion.QUERY_TYPE
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import javax.inject.Inject
+import android.content.Context as Context
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor (private var datastore: DataStoreRepository): ViewModel() {
 
     private var mealType= DEFAULT_MEAL_TYPE
     private var dietType= DEFAULT_DIET_TYPE
+
+    var networkStatus=false
+     var backOnline=false
+
+    var readBackOnline=datastore.readBackOnline.asLiveData()
+
+    private fun saveBackOnline(back:Boolean)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            datastore.storeBackOnline(back)
+        }
+    }
 
     val readMealAndDiet: Flow<MealAndDietType> = datastore.readMealAndDietType
 
@@ -55,6 +73,22 @@ class RecipeViewModel @Inject constructor (private var datastore: DataStoreRepos
             QUERY_ADD_RECIPE_INFORMATION to "true",
             QUERY_FILL_INGREDIENTS to "true"
         )
+    }
+    fun showNetworkStatus(context: Context)
+    {
+        if (!networkStatus)
+        {
+            Toast.makeText(context,"No Internet Connection",Toast.LENGTH_SHORT).show()
+            saveBackOnline(true)
+        }
+        else
+        {
+            if(backOnline) {
+                Toast.makeText(context, "Network Restored", Toast.LENGTH_SHORT).show()
+                saveBackOnline(false)
+            }
+
+        }
     }
 
 }

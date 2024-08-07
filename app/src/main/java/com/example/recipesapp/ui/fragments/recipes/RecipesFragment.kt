@@ -3,10 +3,18 @@ package com.example.recipesapp.ui.fragments.recipes
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,6 +24,7 @@ import com.example.recipesapp.viewmodels.MainViewModel
 import com.example.recipesapp.adapters.RecipeAdapter
 import com.example.recipesapp.databinding.FragmentRecipesBinding
 import com.example.recipesapp.util.Constants.Companion.API_KEY
+import com.example.recipesapp.util.NetworkManager
 import com.example.recipesapp.util.NetworkResult
 import com.example.recipesapp.util.observeOnce
 import com.example.recipesapp.viewmodels.RecipeViewModel
@@ -30,6 +39,7 @@ class RecipesFragment : Fragment() {
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var networkManager: NetworkManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,14 +49,30 @@ class RecipesFragment : Fragment() {
         binding.mainViewModel=mainViewModel
         setupRecyclerView()
         getRecipes()
-        binding.fabRecipes.setOnClickListener {
-            findNavController().navigate(R.id.bottomSheetFragment)
-        }
+        setupToolbar()
+        networkManager=NetworkManager(requireContext())
+        observeNetworkStatus()
+        setupFabClickListener()
+       /* setupSearchMenu()*/
+
         return binding.root
     }
 
+    private fun setupFabClickListener() {
+        binding.fabRecipes.setOnClickListener {
+            if(recipeViewModel.networkStatus)
+            {
+                findNavController().navigate(R.id.action_recipesFragment_to_bottomSheetFragment)
+            }
+            else
+            {
+                recipeViewModel.showNetworkStatus(requireContext())
+            }
+        }
+    }
 
-    fun readDatabase() {
+
+    private fun readDatabase() {
 
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner)
@@ -115,6 +141,62 @@ class RecipesFragment : Fragment() {
         }
 
     }
+    private fun observeNetworkStatus()
+    {
+         recipeViewModel.readBackOnline.observe(viewLifecycleOwner){
+             recipeViewModel.backOnline=it
+    }
+
+        lifecycleScope.launch {
+            networkManager.isNetworkAvailable().collect()
+            {
+                recipeViewModel.networkStatus=it
+                recipeViewModel.showNetworkStatus(requireContext())
+                readDatabase()
+
+            }
+        }
+    }
+
+
+    private fun setupToolbar() {
+        val toolbar: Toolbar = binding.toolbar
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+    }
+
+    private fun setupSearchMenu() {
+        setupToolbar()
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.recipe_search, menu) // Ensure `R.menu.recipe_search` exists
+
+                val searchItem = menu.findItem(R.id.search_bar) // Ensure `R.id.search_bar` exists in your menu
+                val searchView = searchItem.actionView as SearchView
+
+                searchView.queryHint = "Search here..."
+                searchView.isSubmitButtonEnabled = true // Enable the submit button
+
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        // Handle the query submission
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        // Handle text changes
+                        return true
+                    }
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle other menu item selections if necessary
+                return false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
