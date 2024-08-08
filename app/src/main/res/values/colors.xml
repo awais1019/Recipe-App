@@ -26,4 +26,7 @@
 
     <color name="chipSelectedTextColor">@color/green</color>
     <color name="chipTextColor">@color/darkGray</color>
+    <color name="strokeColor">@color/lightMediumGray</color>
+    <color name="cardBackGround">@color/white</color>
+    <color name="IngredientTitle">@color/darker</color>
 </resources>

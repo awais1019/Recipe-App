@@ -36,9 +36,10 @@ class BottomSheetFragment :BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding=FragmentBottomSheetBinding.inflate(inflater,container,false)
-         chipListeners()
-        btnListener()
+
         observe()
+        chipListeners()
+        btnListener()
 
 
 
@@ -49,7 +50,8 @@ class BottomSheetFragment :BottomSheetDialogFragment() {
         if (selectedDietTypeId!=0)
         {
             val chip=chipGroup.findViewById<Chip>(selectedDietTypeId)
-            chip.isChecked=true
+            chip?.isChecked=true
+
         }
     }
    private fun btnListener()
