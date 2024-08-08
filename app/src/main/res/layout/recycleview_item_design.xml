@@ -70,9 +70,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:ellipsize="end"
-
                     android:maxLines="3"
-                    android:text="@{result.summary}"
+                    parseHTML="@{result.summary}"
                     android:textColor="@color/darkGray"
                     app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
                     app:layout_constraintStart_toStartOf="@+id/textViewTitle"

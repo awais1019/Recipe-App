@@ -107,6 +107,8 @@ dependencies {
     kapt(libs.androidx.databinding.compiler)
     implementation(libs.androidx.datastore.preferences)
 
+    implementation (libs.jsoup)
+
 
 
 

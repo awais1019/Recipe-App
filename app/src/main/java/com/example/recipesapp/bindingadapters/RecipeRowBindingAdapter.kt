@@ -10,6 +10,7 @@ import coil.load
 import com.example.recipesapp.R
 import com.example.recipesapp.models.Result
 import com.example.recipesapp.ui.fragments.recipes.RecipesFragmentDirections
+import org.jsoup.Jsoup
 
 class RecipeRowBindingAdapter {
 
@@ -72,6 +73,14 @@ class RecipeRowBindingAdapter {
                         view.setColorFilter(view.context.getColor(R.color.green))
                     }
                 }
+        }
+        @BindingAdapter("parseHTML")
+        @JvmStatic
+        fun parseHtml(textView: TextView, description: String?) {
+            if (!description.isNullOrEmpty()) {
+                val summary = Jsoup.parse(description).text()
+                textView.text = summary
+            }
         }
     }
 }
