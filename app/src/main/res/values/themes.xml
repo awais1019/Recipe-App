@@ -6,6 +6,7 @@
         <item name="colorPrimaryVariant">@color/green</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/green</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="colorOnSecondary">@color/green</item>
 
     </style>
@@ -24,7 +25,7 @@
 
     <style name="customTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/white</item>
-        <item name="tabIndicatorHeight">5dp</item>
+        <item name="tabIndicatorHeight">2dp</item>
         <item name="background">@color/green</item>
         <item name="tabSelectedTextColor">@color/white</item>
 

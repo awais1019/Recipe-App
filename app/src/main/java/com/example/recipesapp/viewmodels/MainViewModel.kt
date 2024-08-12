@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.Repository
+import com.example.recipesapp.database.FavouriteRecipeEntity
 import com.example.recipesapp.database.RecipeEntity
 import com.example.recipesapp.models.FoodRecipe
 import com.example.recipesapp.util.NetworkResult
@@ -27,11 +28,33 @@ class MainViewModel @Inject constructor(
    //Room Database
     val readRecipes:LiveData<List<RecipeEntity>> = repository.local.getRecipes().asLiveData()
 
+    val readFavouriteRecipes =repository.local.getFavouriteRecipes().asLiveData()
+
 
     private fun insertRecipes(recipeEntity: RecipeEntity)=viewModelScope.launch {
         repository.local.insertRecipes(recipeEntity)
     }
 
+    fun insertFavouriteRecipe(favouriteRecipeEntity: FavouriteRecipeEntity)
+    {
+        viewModelScope.launch {
+            repository.local.insertFavouriteRecipes(favouriteRecipeEntity)
+        }
+    }
+
+    fun deleteFavouriteRecipe(favouriteRecipeEntity: FavouriteRecipeEntity)
+    {
+        viewModelScope.launch {
+            repository.local.deleteFavouriteRecipe(favouriteRecipeEntity)
+        }
+    }
+
+    fun deleteAllFavouriteRecipes()
+    {
+        viewModelScope.launch {
+            repository.local.deleteAllFavouriteRecipes()
+        }
+    }
 
 
     //Retrofit

@@ -21,7 +21,7 @@ data class Result(
     @SerializedName("glutenFree")
     val glutenFree: Boolean,
     @SerializedName("id")
-    val id: Int,
+    val recipeId: Int,
     @SerializedName("image")
     val imageType: String,
     @SerializedName("readyInMinutes")
@@ -29,7 +29,7 @@ data class Result(
     @SerializedName("servings")
     val servings: Int,
     @SerializedName("sourceName")
-    val sourceName: String,
+    val sourceName: String?,
     @SerializedName("sourceUrl")
     val sourceUrl: String,
     @SerializedName("summary")
