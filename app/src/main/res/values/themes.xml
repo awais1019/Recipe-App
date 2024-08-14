@@ -6,6 +6,7 @@
         <item name="colorPrimaryVariant">@color/green</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/green</item>
+        <item name="actionModeBackground">@color/darker</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorOnSecondary">@color/green</item>
 

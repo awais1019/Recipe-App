@@ -1,9 +1,7 @@
 package com.example.recipesapp.ui
 
-import android.health.connect.datatypes.units.Length
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.navArgs
 import com.example.recipesapp.R
 import com.example.recipesapp.adapters.PagerAdapter
@@ -29,6 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
+    private var isRecipeSavedVariable=false
+    private var savedRecipe:FavouriteRecipeEntity?=null
     private val args by navArgs<DetailsActivityArgs>()
     private var _binding: ActivityDetailsBinding? = null
     private val binding get() = _binding!!
@@ -67,11 +66,14 @@ class DetailsActivity : AppCompatActivity() {
         mainViewMode.readFavouriteRecipes.observe(this)
         {favouriteRecipes->
             try {
-                for(recipe in favouriteRecipes)
-                    if(recipe.result.recipeId==args.result.recipeId)
-                    {
-                        changeColor(item!!,R.color.yellow)
+                for(recipe in favouriteRecipes) {
+                    if (recipe.result.recipeId == args.result.recipeId) {
+                        changeColor(item!!, R.color.yellow)
+                        isRecipeSavedVariable=true
+                        savedRecipe=recipe
+
                     }
+                }
             }
             catch (e:Exception)
             {
@@ -83,23 +85,33 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-       return when( item.itemId)
-        {
-            R.id.star ->
-            {
+        return when {
+            item.itemId == R.id.star && isRecipeSavedVariable -> {
+                removeFromFavourite(item)
+                true
+            }
+            item.itemId == R.id.star && !isRecipeSavedVariable -> {
                 saveFavouriteRecipe(item)
                 true
             }
-            android.R.id.home ->
-            {
+            item.itemId == android.R.id.home -> {
                 finish()
                 false
             }
-           else -> false
-
+            else -> false
         }
 
+
     }
+
+    private fun removeFromFavourite(menuItem: MenuItem) {
+        mainViewMode.deleteFavouriteRecipe(savedRecipe!!)
+        changeColor(menuItem,R.color.white)
+        showSnackBar("Recipe Removed")
+        savedRecipe=null
+        isRecipeSavedVariable=false
+    }
+
     private fun saveFavouriteRecipe(item: MenuItem)
     {
         mainViewMode.insertFavouriteRecipe(FavouriteRecipeEntity(result = args.result))
