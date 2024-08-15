@@ -32,7 +32,7 @@ class Constants {
         
         const val DEFAULT_MEAL_TYPE="main course"
         const val DEFAULT_DIET_TYPE="gluten free"
-        const val DEFAULT_RECIPES_NUMBER="30"
+        const val DEFAULT_RECIPES_NUMBER="50"
 
 
         //Preference values
@@ -43,9 +43,6 @@ class Constants {
         const val PREFERENCE_DIET_TYPE_ID="dietTypeId"
 
         const val BACK_ONLINE="backOnline"
-
-
-
 
     }
 }

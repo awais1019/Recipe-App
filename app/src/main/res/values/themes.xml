@@ -1,14 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme -->
     <style name="Base.Theme.RecipesApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Override default Material colors with your custom colors -->
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryVariant">@color/green</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/green</item>
-        <item name="actionModeBackground">@color/darker</item>
+        <item name="colorAccent">@color/green</item>
+        <!-- Status bar color -->
+        <item name="statusBarBackground">@color/green</item> <!-- For older Material themes -->
         <item name="colorControlNormal">@color/white</item>
-        <item name="colorOnSecondary">@color/green</item>
 
     </style>
 

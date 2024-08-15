@@ -10,44 +10,41 @@ import com.example.recipesapp.util.NetworkResult
 
 class RecipeMainBindingAdapter {
 
-    companion object{
+    companion object {
 
-        @BindingAdapter("readDatabase","readApiResponse", requireAll = true)
+        @BindingAdapter("readDatabase", "readApiResponse", requireAll = true)
         @JvmStatic
-        fun errorImgView(imageView: ImageView,database:List<RecipeEntity>?,apiResponse: NetworkResult<FoodRecipe>)
-        {
-            if(apiResponse is NetworkResult.Error && database.isNullOrEmpty())
-            {
-                imageView.visibility= View.VISIBLE
-            }
-            else if(apiResponse is NetworkResult.Loading)
-            {
-                imageView.visibility= View.GONE
-            }
-            else if(apiResponse is NetworkResult.Success)
-            {
-                imageView.visibility= View.GONE
-            }
-        }
-        @BindingAdapter("readDatabase1","readApiResponse1", requireAll = true)
-        @JvmStatic
-        fun errorTextView(textView: TextView, apiResponse: NetworkResult<FoodRecipe>,database: List<RecipeEntity>?)
-        {
-            if(apiResponse is NetworkResult.Error && database.isNullOrEmpty())
-            {
-                textView.visibility= View.VISIBLE
-                textView.text=apiResponse.msg.toString()
-            }
-            else if(apiResponse is NetworkResult.Loading)
-            {
-                textView.visibility=View.GONE
-            }
-            else if(apiResponse is NetworkResult.Success)
-            {
-                textView.visibility=View.GONE
+        fun setImageViewVisibility(imageView: ImageView, database: List<RecipeEntity>?, apiResponse: NetworkResult<FoodRecipe>) {
+            when (apiResponse) {
+                is NetworkResult.Error -> {
+
+                    imageView.visibility = if (database.isNullOrEmpty()) View.VISIBLE else View.GONE
+                }
+                is NetworkResult.Loading -> {
+                    imageView.visibility = View.GONE
+                }
+                is NetworkResult.Success -> {
+                    imageView.visibility = View.GONE
+                }
             }
         }
 
+        @BindingAdapter("readDatabase1", "readApiResponse1", requireAll = true)
+        @JvmStatic
+        fun setTextViewVisibility(textView: TextView, apiResponse: NetworkResult<FoodRecipe>, database: List<RecipeEntity>?) {
+            when (apiResponse) {
+                is NetworkResult.Error -> {
+                    // Show TextView with error message only if database is empty
+                    textView.visibility = if (database.isNullOrEmpty()) View.VISIBLE else View.GONE
+                    textView.text = apiResponse.msg.toString()
+                }
+                is NetworkResult.Loading -> {
+                    textView.visibility = View.GONE
+                }
+                is NetworkResult.Success -> {
+                    textView.visibility = View.GONE
+                }
+            }
+        }
     }
-
 }
