@@ -77,7 +77,7 @@ class MainViewModel @Inject constructor(
              }
              response.body()!!.results.isNullOrEmpty()->
              {
-                 return  NetworkResult.Error("Recipe not found")
+                 return  NetworkResult.Error(response.message().toString())
              }
              response.isSuccessful-> {
                  val res = response.body()
@@ -104,7 +104,7 @@ class MainViewModel @Inject constructor(
         }
         catch (e:Exception)
         {
-            recipesResponse.value=NetworkResult.Error("Recipes Not Found")
+            recipesResponse.value=NetworkResult.Error("Invalid Api key")
         }
 
         }
